@@ -1,0 +1,35 @@
+{
+  "name": "inventory-management-system",
+  "version": "1.0.0",
+  "description": "Full-stack inventory management system with Angular frontend and Express backend",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm start",
+    "build": "npm run build:server && npm run build:client",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "start:server": "cd server && npm start",
+    "start:client": "cd client && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@angular/common": "^21.2.11",
+    "@angular/core": "^21.2.11",
+    "@angular/forms": "^21.2.11",
+    "@angular/platform-browser": "^21.2.11",
+    "@angular/router": "^21.2.11",
+    "@supabase/supabase-js": "^2.105.1",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "rxjs": "^7.8.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}
