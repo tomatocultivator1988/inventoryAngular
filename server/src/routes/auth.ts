@@ -1,8 +1,8 @@
 import { Router, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import { supabaseAdmin } from '../lib/supabase';
-import { authenticateToken, AuthRequest, requireRole } from '../middleware/auth';
+import { authenticateToken, AuthRequest } from '../middleware/auth';
 
 export const authRoutes = Router();
 
@@ -56,13 +56,15 @@ authRoutes.post('/register', async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: userError.message });
     }
 
+    const jwtSecret = process.env.JWT_SECRET ?? 'your-secret-key';
+    const expiresIn = (process.env.JWT_EXPIRES_IN ?? '7d') as SignOptions['expiresIn'];
     const token = jwt.sign(
       { id: userData.id, email: userData.email, role: userData.role },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      jwtSecret,
+      { expiresIn }
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'User registered successfully',
       user: {
         id: userData.id,
@@ -72,7 +74,7 @@ authRoutes.post('/register', async (req: AuthRequest, res: Response) => {
       token
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -120,13 +122,15 @@ authRoutes.post('/login', async (req: AuthRequest, res: Response) => {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    const jwtSecret = process.env.JWT_SECRET ?? 'your-secret-key';
+    const expiresIn = (process.env.JWT_EXPIRES_IN ?? '7d') as SignOptions['expiresIn'];
     const token = jwt.sign(
       { id: userData.id, email: userData.email, role: userData.role },
-      process.env.JWT_SECRET || 'your-secret-key',
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      jwtSecret,
+      { expiresIn }
     );
 
-    res.json({
+    return res.json({
       message: 'Login successful',
       user: {
         id: userData.id,
@@ -136,7 +140,7 @@ authRoutes.post('/login', async (req: AuthRequest, res: Response) => {
       token
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -164,9 +168,9 @@ authRoutes.get('/me', authenticateToken, async (req: AuthRequest, res: Response)
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json({ user: userData });
+    return res.json({ user: userData });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -227,8 +231,8 @@ authRoutes.post('/change-password', authenticateToken, async (req: AuthRequest, 
       return res.status(400).json({ error: updateError.message });
     }
 
-    res.json({ message: 'Password changed successfully' });
+    return res.json({ message: 'Password changed successfully' });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });

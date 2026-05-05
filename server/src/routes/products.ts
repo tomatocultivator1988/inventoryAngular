@@ -59,7 +59,7 @@ productRoutes.get('/', async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: error.message });
     }
 
-    res.json({
+    return res.json({
       data: products,
       pagination: {
         page,
@@ -69,7 +69,7 @@ productRoutes.get('/', async (req: AuthRequest, res: Response) => {
       }
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -101,9 +101,9 @@ productRoutes.get('/:id', async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    res.json({ data: product });
+    return res.json({ data: product });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -169,12 +169,12 @@ productRoutes.post('/', authenticateToken, requireRole('admin'), async (req: Aut
       return res.status(400).json({ error: error.message });
     }
 
-    res.status(201).json({
+    return res.status(201).json({
       message: 'Product created successfully',
       data: product
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -242,12 +242,12 @@ productRoutes.put('/:id', authenticateToken, requireRole('admin'), async (req: A
       return res.status(400).json({ error: error?.message || 'Product not found' });
     }
 
-    res.json({
+    return res.json({
       message: 'Product updated successfully',
       data: product
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -280,9 +280,9 @@ productRoutes.delete('/:id', authenticateToken, requireRole('admin'), async (req
       return res.status(400).json({ error: error.message });
     }
 
-    res.json({ message: 'Product deleted successfully' });
+    return res.json({ message: 'Product deleted successfully' });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -332,12 +332,12 @@ productRoutes.patch('/:id/update-quantity', authenticateToken, requireRole('admi
       return res.status(400).json({ error: error?.message || 'Product not found' });
     }
 
-    res.json({
+    return res.json({
       message: 'Quantity updated successfully',
       data: product
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
 
@@ -371,12 +371,12 @@ productRoutes.post('/upload', authenticateToken, requireRole('admin'), upload.si
 
     const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
 
-    res.json({
+    return res.json({
       message: 'Image uploaded successfully',
       imageUrl: imageUrl,
       filename: req.file.filename
     });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 });
