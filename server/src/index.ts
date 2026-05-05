@@ -11,6 +11,9 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const serverUrl = process.env.NODE_ENV === 'production'
+  ? (process.env.PUBLIC_API_URL || `http://localhost:${PORT}`)
+  : `http://localhost:${PORT}`;
 
 // Middleware
 app.use(cors({
@@ -34,8 +37,8 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
-        description: 'Development server'
+        url: serverUrl,
+        description: process.env.NODE_ENV === 'production' ? 'Production server' : 'Development server'
       }
     ],
     components: {
