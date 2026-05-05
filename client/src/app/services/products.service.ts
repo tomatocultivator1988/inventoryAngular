@@ -30,7 +30,7 @@ export interface ProductsResponse {
   providedIn: 'root'
 })
 export class ProductsService {
-  private apiUrl = 'http://localhost:3001/api/products';
+  private apiUrl = 'https://imsys.up.railway.app/api/products';
 
   constructor(private http: HttpClient) {}
 

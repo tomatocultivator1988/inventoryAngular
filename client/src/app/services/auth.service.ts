@@ -22,7 +22,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3001/api/auth';
+  private apiUrl = 'https://imsys.up.railway.app/api/auth';
   private currentUser = signal<User | null>(null);
   private isAuthenticated = signal<boolean>(false);
   private token = signal<string | null>(null);
